@@ -155,13 +155,21 @@
 
         document.querySelectorAll('.box').forEach((box, boxIndex) => {
             box.addEventListener('click', () => {
+                // Seçili blok varsa, seçim iptal edilsin
+                if (selectedBlock && selectedBlock.box === boxIndex) {
+                    selectedBlock = null;
+                    updateBoxes();
+                    return;
+                }
+
+                // Yeni kutuya taşımak için seçilen blok varsa, kutu dolu olmasın
                 if (selectedBlock) {
                     if (selectedBlock.box !== boxIndex && boxes[boxIndex].length < 6) {
                         const movedBlock = boxes[selectedBlock.box].pop();
                         boxes[boxIndex].push(movedBlock);
                         selectedBlock = null;
-                        updateBoxes();
                         checkForExplosions();
+                        updateBoxes();
                     }
                 } else {
                     if (boxes[boxIndex].length > 0) {
